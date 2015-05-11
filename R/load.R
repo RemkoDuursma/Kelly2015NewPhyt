@@ -50,3 +50,8 @@ names(climdat) <- c("species","Tmax","MAP")
 #---- Euc biomass, WUE, etc.
 EUCBIOMASS <- read.csv("data/EUC_BIOMASSdata.csv")
 
+
+
+
+
+
