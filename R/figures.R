@@ -74,6 +74,37 @@ figure2 <- function(df){
 }
 
 
+figure3 <- function(PILBIOMASS, POPBIOMASS){
+  
+  par(xaxs="i",yaxs="i", las=1, mar=c(4.5,4.5,1,1), 
+      mfrow=c(1,2), cex.lab=1)
+  
+  
+  palette(c("blue","blue","red","red"))
+  pchs <- c(1,16,1,16)
+  with(PILBIOMASS, {
+    plot(D, E, col=ST,pch=pchs[ST],
+         ylim=c(0,30),
+         xlim=c(0,200),
+         ylab=expression(Transpiration~~(l~week^-1)))
+    arrows(D,ESE, D, LSE, length = .035, angle = 90, code = 3,col=ST)
+  })
+  title(main="Eucalyptus pilularis",  font.main=4, cex.main=1)
+  legend("topleft",  expression(aC[a]~-~W, aC[a]~-~D,eC[a]~-~W ,eC[a]~-~D),
+         cex=0.75,bty="n",
+         pch = c(16,1,16,1), col=c("blue","blue","red","red"))
+
+  with(POPBIOMASS, {
+    plot(D, E, col=ST,pch=pchs[ST],
+         ylim=c(0,12),
+         xlim=c(0,250),
+         ylab=expression(Transpiration~~(l~week^-1)))
+    arrows(D,ESE, D, LSE, length = .035, angle = 90, code = 3,col=ST)
+  })
+  title(main="Eucalyptus populnea",  font.main=4, cex.main=1)
+  
+}
+
 figure5 <- function(spotagg, fpil, fpop){
   
   par(mfrow=c(1,2),cex.main=0.9)
