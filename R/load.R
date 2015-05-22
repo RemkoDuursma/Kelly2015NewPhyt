@@ -1,5 +1,7 @@
 library(doBy)
 library(plantecophys)
+library(broom)
+library(reporttools)
 
 source("R/functions.R")
 source("R/figures.R")
@@ -55,5 +57,9 @@ PILBIOMASS <- read.csv("data/PILTRANSAA.csv")
 POPBIOMASS <- read.csv("data/POPTRANSAA.csv")
 
 
+#---- g1 and height.
+eucg1h <- read.csv("data/EUC_g1_HEIGHT.csv")
 
 
+#---- Biomass with ITE
+eucbiomite <- read.csv("data/EUC_BIOMASSdata_wue_ite_added.csv")

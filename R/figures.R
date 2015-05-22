@@ -2,6 +2,8 @@
 
 figure1 <- function(){
   
+  par(mar=c(5,5,1,1), cex.lab=1.1)
+  
   # Generate Figure 1 for Jeff's paper
   ACi <- function(Ci) {
     Jmax <- 96
@@ -86,6 +88,7 @@ figure3 <- function(PILBIOMASS, POPBIOMASS){
     plot(D, E, col=ST,pch=pchs[ST],
          ylim=c(0,30),
          xlim=c(0,200),
+         xlab="Day",
          ylab=expression(Transpiration~~(l~week^-1)))
     arrows(D,ESE, D, LSE, length = .035, angle = 90, code = 3,col=ST)
   })
@@ -98,6 +101,7 @@ figure3 <- function(PILBIOMASS, POPBIOMASS){
     plot(D, E, col=ST,pch=pchs[ST],
          ylim=c(0,12),
          xlim=c(0,250),
+         xlab="Day",
          ylab=expression(Transpiration~~(l~week^-1)))
     arrows(D,ESE, D, LSE, length = .035, angle = 90, code = 3,col=ST)
   })
@@ -105,15 +109,67 @@ figure3 <- function(PILBIOMASS, POPBIOMASS){
   
 }
 
+
+
+figure4 <- function(df){
+  
+  # linear regressions
+  lm1 <- lm(g1 ~ H, data=subset(df, Species == "PIL"))
+  lm2 <- lm(g1 ~ H, data=subset(df, Species == "POP"))
+  
+  
+  par(xaxs="i",yaxs="i", las=1, mar=c(4.5,4.5,1,1), 
+      mfrow=c(1,2), cex.lab=1)
+  
+  palette(c("blue","red"))
+  pchs <- c(16,1,16,1)
+  
+  plotpanel <- function(sp, ...){
+    with(subset(df, Species == sp), {
+      plot(H, g1, col=CO2,pch=pchs[H2O],
+           xlab="Height (m)",
+           ylab=expression(g[1]),
+           panel.first= predline(lm(g1 ~ H, data=subset(df, Species == sp))),
+           ...
+      )
+    })
+  }
+  
+  pvalr2 <- function(lmobj){
+    legend("topright", legend=c(as.expression(bquote(italic(p) == .(formatPval(glance(lmobj)$p.value)))),
+                                as.expression(bquote(R^2 == .(round(glance(lmobj)$r.squared,2))))
+    ), bty='n')
+  }
+  
+  plotpanel("PIL", ylim=c(0,6), xlim=c(0,4))
+  pvalr2(lm1)
+  legend("topleft",  expression(aC[a]~-~W, aC[a]~-~D,eC[a]~-~W ,eC[a]~-~D),
+         cex=0.75,bty="n",
+         pch = c(16,1,16,1), col=c("blue","blue","red","red"))
+  title(main="Eucalyptus pilularis",  font.main=4, cex.main=1)
+  
+  plotpanel("POP", ylim=c(0,12), xlim=c(0,2))
+  pvalr2(lm2)
+  title(main="Eucalyptus populnea",  font.main=4, cex.main=1)
+  
+  
+  
+}
+
+
+
+
+
+
 figure5 <- function(spotagg, fpil, fpop){
   
-  par(mfrow=c(1,2),cex.main=0.9)
+  par(mfrow=c(1,2),cex.main=0.9, mar=c(4.5, 4.5, 1, 1))
   
   with(subset(spotagg, Water_treatment == "ND"), 
        plot(Ci.mean, Photo.mean, col=c("blue","red")[CO2_treatment],
             xlab=expression(C[i]~~(ppm)),
             main="Field capacity",
-            ylab=expression(A[net~~(mu*mol~m^-2~s^-1)]),
+            ylab=expression(A[net]~~(mu*mol~m^-2~s^-1)),
             xlim=c(50,500), ylim=c(0,30),
             pch=c(21,19)[species], bg="white",
             panel.first={
@@ -133,7 +189,9 @@ figure5 <- function(spotagg, fpil, fpop){
        ))
   
   legend("topleft", levels(spotagg$species), pch=c(21,19), lty=c(1,5))
-  legend("bottomright", c("Ambient Ca","Elevated Ca"), fill=c("blue","red"))
+  legend("bottomright", c(expression(Ambient~C[a]),
+                          expression(Elevated~C[a])
+                          ), fill=c("blue","red"))
   
   addaciline(fpil)
   addaciline(fpop, lty=5)
@@ -142,7 +200,7 @@ figure5 <- function(spotagg, fpil, fpop){
   with(subset(spotagg, Water_treatment == "D"), 
        plot(Ci.mean, Photo.mean, col=c("blue","red")[CO2_treatment],
             xlab=expression(C[i]~~(ppm)),
-            ylab=expression(A[net~~(mu*mol~m^-2~s^-1)]),
+            ylab=expression(A[net]~~(mu*mol~m^-2~s^-1)),
             xlim=c(50,500), ylim=c(0,30),
             main="50% Field capacity",
             pch=c(21,19)[species], bg="white",
@@ -165,3 +223,50 @@ figure5 <- function(spotagg, fpil, fpop){
   addaciline(fpil)
   addaciline(fpop, lty=5)
 }
+
+
+
+figure6 <- function(df){
+  
+  
+  par(mar=c(5,5,1,1), cex.lab=1.1, xaxs="i", yaxs="i")
+  
+  pchs <- c(1,19,1,19,2,17,2,17)
+  palette(c("blue","red"))
+  
+  lm1 <- lm(wue ~ ite, data=subset(df, Species == "PIL"))
+  lm2 <- lm(wue ~ ite, data=subset(df, Species == "POP"))
+  
+  with(df, plot(ite, wue, 
+                xlim=c(0,30),
+                ylim=c(0,10),
+                pch=pchs[ST],
+                col=CO2,
+                xlab=expression(ITE~~(mu*mol~CO[2]~mmol~H[2]*O^-1)),
+                ylab=expression(WUE~~(mu*mol~CO[2]~mmol~H[2]*O^-1)),
+                panel.first={
+                  predline(lm1, lwd=1)
+                  predline(lm2, lwd=1, lty=5)
+                }
+                ))
+  
+  l <- legend("bottomright", 
+              legend=c(expression(aC[a]-W,aC[a]-D,eC[a]-W,eC[a]-D)),
+              bty="n",pch=c(17,2,17,2),col=c("blue","blue","red","red"),
+              cex=0.8,pt.cex=1,
+              title=expression(italic(Eucalyptus~populnea)))
+              
+  legend(l$rect$left, l$rect$top + l$rect$h, legend=c(expression(aC[a]-W,aC[a]-D,eC[a]-W,eC[a]-D)),
+         bty="n",pch=c(16,1,16,1),col=c("blue","blue","red","red"),
+         cex=0.8,pt.cex=1,
+         title=expression(italic(Eucalyptus~pilularis)))
+        
+  
+}
+
+  
+  
+  
+  
+  
+
