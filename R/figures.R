@@ -63,15 +63,15 @@ figure2 <- function(df){
   
   par(xaxs="i", yaxs="i")
   palette(alpha(c("forestgreen","darkorange"),0.5))
+  pchs <- c(19, 17)
   with(df, plot(Tmax/10, MAP, 
                 xlim=c(20,40), ylim=c(0,2500),
                 xlab=expression("Maximum temperature of warmest month"~(degree*C)),
                 ylab="Mean annual precipitation (mm)",
-                pch=16, col=species))
+                pch=pchs[species], col=species))
   
   legend("topright", c("E. pilularis","E. populnea"), text.font=3,
-         pch=19, col=alpha(palette(),0.9), bty='n')
-  
+         pch=pchs, col=alpha(palette(),0.9), bty='n')
   
 }
 
@@ -97,9 +97,10 @@ figure3 <- function(PILBIOMASS, POPBIOMASS){
          cex=0.75,bty="n",
          pch = c(16,1,16,1), col=c("blue","blue","red","red"))
 
+  pchs <- c(2,17,2,17)
   with(POPBIOMASS, {
     plot(D, E, col=ST,pch=pchs[ST],
-         ylim=c(0,12),
+         ylim=c(0,15),
          xlim=c(0,250),
          xlab="Day",
          ylab=expression(Transpiration~~(l~week^-1)))
@@ -148,6 +149,8 @@ figure4 <- function(df){
          pch = c(16,1,16,1), col=c("blue","blue","red","red"))
   title(main="Eucalyptus pilularis",  font.main=4, cex.main=1)
   
+  pchs <- c(17,2,17,2)
+  
   plotpanel("POP", ylim=c(0,12), xlim=c(0,2))
   pvalr2(lm2)
   title(main="Eucalyptus populnea",  font.main=4, cex.main=1)
@@ -171,7 +174,7 @@ figure5 <- function(spotagg, fpil, fpop){
             main="Field capacity",
             ylab=expression(A[net]~~(mu*mol~m^-2~s^-1)),
             xlim=c(50,500), ylim=c(0,30),
-            pch=c(21,19)[species], bg="white",
+            pch=c(19,17)[species], 
             panel.first={
               
               if(exists("bpil")){
@@ -188,10 +191,12 @@ figure5 <- function(spotagg, fpil, fpop){
             }
        ))
   
-  legend("topleft", levels(spotagg$species), pch=c(21,19), lty=c(1,5))
-  legend("bottomright", c(expression(Ambient~C[a]),
+  l <- legend("topleft", c("E. pilularis", "E.populnea"), bty='n',
+         pch=c(19,17), lty=c(1,5))
+  legend(l$rect$left+l$rect$w, l$rect$top, 
+         c(expression(Ambient~C[a]),
                           expression(Elevated~C[a])
-                          ), fill=c("blue","red"))
+                          ), fill=c("blue","red"), bty='n')
   
   addaciline(fpil)
   addaciline(fpop, lty=5)
@@ -203,7 +208,7 @@ figure5 <- function(spotagg, fpil, fpop){
             ylab=expression(A[net]~~(mu*mol~m^-2~s^-1)),
             xlim=c(50,500), ylim=c(0,30),
             main="50% Field capacity",
-            pch=c(21,19)[species], bg="white",
+            pch=c(21,24)[species], bg="white",
             panel.first={
               
               if(exists("bpil")){
