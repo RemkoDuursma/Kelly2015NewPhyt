@@ -1,9 +1,21 @@
-### Analysis and figures for Kelly et al. (long-term drought)
+### Analysis and figures for Kelly et al. 2015 (New Phytologist, in revision)
 
-Should be able to do,
 
+This repository contains the raw data and R code to produce Figures 1-6.
+
+You need to install the following R packages:
+
+```r
+install.packages(c("doBy","plantecophys","broom","reporttools"), dependencies=TRUE)
 ```
+
+Then you should be able to do:
+
+```r
 source("run.R")
 ```
 
-which produces figures in `output/figures` subdirectory.
+which produces six figures as PDF in `output/figures` subdirectory.
+
+
+**Contact:** Remko Duursma (remkoduursma@gmail.com)
