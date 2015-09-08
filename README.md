@@ -1,5 +1,6 @@
 ### Analysis and figures for Kelly et al. 2015 (New Phytologist, in revision)
 
+[![DOI](https://zenodo.org/badge/11128/RemkoDuursma/Kelly2015NewPhyt.svg)](https://zenodo.org/badge/latestdoi/11128/RemkoDuursma/Kelly2015NewPhyt)
 
 This repository contains the raw data and R code to produce Figures 1-6.
 
